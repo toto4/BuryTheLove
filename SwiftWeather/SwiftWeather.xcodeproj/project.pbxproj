@@ -21,6 +21,7 @@
 		5874EC701E236410009F1C99 /* WeatherNetUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5874EC6F1E236410009F1C99 /* WeatherNetUtil.swift */; };
 		5874EC721E238156009F1C99 /* RegionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5874EC711E238156009F1C99 /* RegionResult.swift */; };
 		5874EC741E238FFE009F1C99 /* RegionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5874EC731E238FFE009F1C99 /* RegionViewController.swift */; };
+		5874EC7A1E25D806009F1C99 /* WeatherCurrent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5874EC791E25D805009F1C99 /* WeatherCurrent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		5874EC6F1E236410009F1C99 /* WeatherNetUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherNetUtil.swift; sourceTree = "<group>"; };
 		5874EC711E238156009F1C99 /* RegionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionResult.swift; sourceTree = "<group>"; };
 		5874EC731E238FFE009F1C99 /* RegionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionViewController.swift; sourceTree = "<group>"; };
+		5874EC791E25D805009F1C99 /* WeatherCurrent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherCurrent.swift; sourceTree = "<group>"; };
 		724FEA8DC6733F6D1B720B46 /* Pods_SwiftWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E34930DA85D1304A8F0BCF21 /* Pods-SwiftWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftWeather.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftWeather/Pods-SwiftWeather.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +142,7 @@
 				5874EC6A1E235B6F009F1C99 /* Result */,
 				5874EC5E1E1E3A38009F1C99 /* Weather.swift */,
 				5874EC601E1E4C2F009F1C99 /* Region.swift */,
+				5874EC791E25D805009F1C99 /* WeatherCurrent.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				5874EC611E1E4C2F009F1C99 /* Region.swift in Sources */,
 				5874EC631E1F41FD009F1C99 /* CCNetTool.swift in Sources */,
 				5874EC5B1E1E38CC009F1C99 /* HomeViewController.swift in Sources */,
+				5874EC7A1E25D806009F1C99 /* WeatherCurrent.swift in Sources */,
 				5874EC701E236410009F1C99 /* WeatherNetUtil.swift in Sources */,
 				5874EC5F1E1E3A38009F1C99 /* Weather.swift in Sources */,
 				5874EC741E238FFE009F1C99 /* RegionViewController.swift in Sources */,

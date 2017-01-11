@@ -22,7 +22,7 @@ class HomeViewController: UIViewController ,RegionViewControllerDelegate {
     
     var regionButton: UIButton!
     
-    var weather: Weather?
+    var weatherCurrent: WeatherCurrent?
     
     
     override func viewDidLoad() {
@@ -104,18 +104,18 @@ class HomeViewController: UIViewController ,RegionViewControllerDelegate {
         WeatherNetUtil.getCurrentWeather(location: location, completionHandler: {
             result in
             
-            self.weather = result.weather
+            self.weatherCurrent = result.weatherCurrent
             
-            self.cityNameLabel.text = self.weather?.regoin?.name
+            self.cityNameLabel.text = self.weatherCurrent?.regoin?.name
             
-            self.weatherImageView.image = UIImage(named: self.weather?.code ?? "")
+            self.weatherImageView.image = UIImage(named: self.weatherCurrent?.code ?? "")
             
-            self.weatherLabel.text = self.weather?.text
+            self.weatherLabel.text = self.weatherCurrent?.text
             
-            self.temperatureLabel.text = (self.weather?.temperature)! + "℃"
+            self.temperatureLabel.text = (self.weatherCurrent?.temperature)! + "℃"
             
             if
-                let temp = self.weather?.temperature ,
+                let temp = self.weatherCurrent?.temperature ,
                 let tempInt = Int(temp) ,
                 tempInt > 0 {
                 self.temperatureLabel.textColor = UIColor.red

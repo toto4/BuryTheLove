@@ -10,9 +10,9 @@ import UIKit
 
 class CurrentWeatherResult: CCResult {
     
-    var weather: Weather?
+    var weatherCurrent: WeatherCurrent?
     
     override func handle() {
-        self.weather = Weather(resultJson: self.json?["results"][0])
+        self.weatherCurrent = WeatherCurrent(resultJson: self.json?["results"][0])
     }
 }
