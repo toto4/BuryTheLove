@@ -4,4 +4,5 @@ target 'SwiftWeather' do
 pod 'SnapKit'
 pod 'Alamofire', '~> 4.0'
 pod 'SwiftyJSON'
+pod 'SQLite.swift', '~> 0.11.2'
 end

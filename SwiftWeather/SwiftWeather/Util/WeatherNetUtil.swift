@@ -17,8 +17,8 @@ let API_LIFE = "/life/suggestion.json"
 /* 城市检索 */
 let API_LOCATION = "/location/search.json"
 
-/* 知心天气KEY */
-let ZHIXIN_KEY = "ylzeyw46piirefwm"
+/* 心知天气KEY */
+let XINZHI_KEY = "ylzeyw46piirefwm"
 
 
 class WeatherNetUtil: NSObject {
@@ -31,12 +31,28 @@ class WeatherNetUtil: NSObject {
      IP地址 例如：location=220.181.111.86（某些IP地址可能无法定位到城市）
      “ip”两个字母 自动识别请求IP地址，例如：location=ip
      */
-    
-    class func getCurrentWeather(location: String ,completionHandler: @escaping(CurrentWeatherResult) -> Void){
+    /// 当前天气
+    class func getCurrentWeather(location: String ,completionHandler: @escaping(WeatherCurrentResult) -> Void){
         var param:[String:Any] = [:]
-        param["key"] = ZHIXIN_KEY
+        param["key"] = XINZHI_KEY
         param["location"] = location
-        CCNetTool.get(from: API_CURRENT, param: param, resClass: CurrentWeatherResult(), completionHandler:completionHandler)
+        CCNetTool.get(from: API_CURRENT, param: param, resClass: WeatherCurrentResult(), completionHandler:completionHandler)
+    }
+    
+    /// 逐日天气
+    class func getDailyWeather(location: String ,completionHandler: @escaping(WeatherDailyResult) -> Void){
+        var param:[String:Any] = [:]
+        param["key"] = XINZHI_KEY
+        param["location"] = location
+        CCNetTool.get(from: API_DAILY, param: param, resClass: WeatherDailyResult(), completionHandler:completionHandler)
+    }
+    
+    /// 生活指数
+    class func getLifeWeather(location: String ,completionHandler: @escaping(WeatherLifeResult) -> Void){
+        var param:[String:Any] = [:]
+        param["key"] = XINZHI_KEY
+        param["location"] = location
+        CCNetTool.get(from: API_LIFE, param: param, resClass: WeatherLifeResult(), completionHandler:completionHandler)
     }
     
     
@@ -57,7 +73,7 @@ class WeatherNetUtil: NSObject {
     ///   - completionHandler:
     class func searchRegion(keyWord: String ,completionHandler: @escaping(RegionResult) -> Void){
         var param:[String:Any] = [:]
-        param["key"] = ZHIXIN_KEY
+        param["key"] = XINZHI_KEY
         param["q"] = keyWord
         param["limit"] = 30
         CCNetTool.get(from: API_LOCATION, param: param, resClass: RegionResult(), completionHandler:completionHandler)

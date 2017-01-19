@@ -10,7 +10,9 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-class HomeViewController: UIViewController ,RegionViewControllerDelegate {
+class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITableViewDataSource ,UITableViewDelegate {
+    
+    var tableview: UITableView!
     
     var cityNameLabel: UILabel!
     
@@ -22,14 +24,20 @@ class HomeViewController: UIViewController ,RegionViewControllerDelegate {
     
     var regionButton: UIButton!
     
+    let refreshControl = UIRefreshControl()
+    
     var weatherCurrent: WeatherCurrent?
+    
+    var weatherDaily: WeatherDaily?
+    
+    var weatherLife: WeatherLife?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "首页"
-        
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
+        self.hideNavigationBar = true
         
         self.setupComponent()
         self.localWeatherData()
@@ -37,45 +45,80 @@ class HomeViewController: UIViewController ,RegionViewControllerDelegate {
     }
     
     func setupComponent() {
-        self.view.backgroundColor = UIColor.white
+
+        self.tableview = UITableView(frame: CGRect.zero, style: .grouped)
+        self.tableview.backgroundColor = UIColor.white
+        self.tableview.register(HomeWeatherCell.classForCoder(), forCellReuseIdentifier: kHomeWeatherCellId)
+        self.tableview.register(HomeLifeCell.classForCoder(), forCellReuseIdentifier: kHomeLifeCellId)
+        self.tableview.dataSource = self
+        self.tableview.delegate = self
+        self.tableview.showsVerticalScrollIndicator = false
+        self.tableview.separatorStyle = .none
+        self.view.addSubview(self.tableview)
+        self.tableview.snp.makeConstraints { (make) in
+            make.edges.equalTo(self.view)
+        }
+        
+        let headerView = UIView()
+        headerView.frame = CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 320)
+        self.tableview.tableHeaderView = headerView
+        
+        self.tableview.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: EDGE_TEXT))
+        
+        self.refreshControl.tintColor = UIColor.black
+        self.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableview.addSubview(self.refreshControl)
         
         //城市
         self.cityNameLabel = UILabel()
         self.cityNameLabel.textColor = UIColor.darkText
-        self.cityNameLabel.font = UIFont.systemFont(ofSize: 30)
-        self.view.addSubview(self.cityNameLabel)
+        self.cityNameLabel.font = UIFont.systemFont(ofSize: 32, weight: UIFontWeightThin)
+        headerView.addSubview(self.cityNameLabel)
         self.cityNameLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view)
-            make.top.equalTo(self.view).offset(40)
-        }
-        
-        //天气图标
-        self.weatherImageView = UIImageView()
-        self.view.addSubview(self.weatherImageView)
-        self.weatherImageView.snp.makeConstraints { (make) in
-            make.centerX.equalTo(self.cityNameLabel)
-            make.top.equalTo(self.cityNameLabel.snp.bottom).offset(20)
-            make.size.equalTo(CGSize(width: 150, height: 150))
+            make.top.equalTo(headerView).offset(60)
         }
         
         //天气名
         self.weatherLabel = UILabel()
         self.weatherLabel.textColor = UIColor.darkGray
-        self.weatherLabel.font = UIFont.systemFont(ofSize: 20)
-        self.view.addSubview(self.weatherLabel)
+        self.weatherLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFontWeightThin)
+        headerView.addSubview(self.weatherLabel)
         self.weatherLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.cityNameLabel)
-            make.top.equalTo(self.weatherImageView.snp.bottom).offset(20)
+            make.top.equalTo(self.cityNameLabel.snp.bottom).offset(5)
+        }
+        
+        //天气图标
+        self.weatherImageView = UIImageView()
+        headerView.addSubview(self.weatherImageView)
+        self.weatherImageView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(self.cityNameLabel)
+            make.top.equalTo(self.weatherLabel.snp.bottom).offset(10)
+            make.size.equalTo(CGSize(width: 70, height: 70))
         }
         
         //温度
         self.temperatureLabel = UILabel()
-        self.temperatureLabel.font = UIFont.systemFont(ofSize: 25)
-        self.view.addSubview(self.temperatureLabel)
+        self.temperatureLabel.font = UIFont.systemFont(ofSize: 90, weight: UIFontWeightUltraLight)
+        self.temperatureLabel.textColor = UIColor.darkText
+        headerView.addSubview(self.temperatureLabel)
         self.temperatureLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.cityNameLabel)
-            make.top.equalTo(self.weatherLabel.snp.bottom).offset(20)
+            make.top.equalTo(self.weatherImageView.snp.bottom).offset(0)
         }
+        
+        //度°
+        let symbolLabel = UILabel()
+        symbolLabel.text = "°"
+        symbolLabel.textColor = UIColor.darkText
+        symbolLabel.font = UIFont.systemFont(ofSize: 50, weight: UIFontWeightUltraLight)
+        headerView.addSubview(symbolLabel)
+        symbolLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.temperatureLabel).offset(6)
+            make.left.equalTo(self.temperatureLabel.snp.right)
+        }
+        
         
         //选择地区按钮
         self.regionButton = UIButton()
@@ -92,6 +135,57 @@ class HomeViewController: UIViewController ,RegionViewControllerDelegate {
         
     }
     
+    //MARK:- TableView Datasource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return self.weatherDaily?.dailys.count ?? 0
+        }
+        return self.weatherLife?.lifeArray.count ?? 0
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section == 0 {
+            let daily = self.weatherDaily?.dailys[indexPath.row]
+            
+            let cell: HomeWeatherCell = tableview.dequeueReusableCell(withIdentifier: kHomeWeatherCellId) as! HomeWeatherCell
+            
+            cell.daily = daily
+            
+            return cell
+        } else {
+            
+            let lifeItem = self.weatherLife?.lifeArray[indexPath.row]
+            
+            let cell: HomeLifeCell = tableview.dequeueReusableCell(withIdentifier: kHomeLifeCellId) as! HomeLifeCell
+            
+            cell.leftItem = lifeItem
+            
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return kHomeWeatherCellH
+        } else {
+            return kHomeLifeCellH
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return EDGE_TEXT
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let tempFooter = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 10))
+        tempFooter.backgroundColor = UIColor.white
+        return tempFooter
+    }
+    
     //MARK:- 本地天气
     
     func localWeatherData() {
@@ -99,10 +193,12 @@ class HomeViewController: UIViewController ,RegionViewControllerDelegate {
     }
     
     //MARK:- 选择位置天气
-    
     func weatherWithLocation(location: String) {
+        //当前天气
         WeatherNetUtil.getCurrentWeather(location: location, completionHandler: {
             result in
+            
+            self.refreshControl.endRefreshing()
             
             self.weatherCurrent = result.weatherCurrent
             
@@ -112,18 +208,25 @@ class HomeViewController: UIViewController ,RegionViewControllerDelegate {
             
             self.weatherLabel.text = self.weatherCurrent?.text
             
-            self.temperatureLabel.text = (self.weatherCurrent?.temperature)! + "℃"
-            
-            if
-                let temp = self.weatherCurrent?.temperature ,
-                let tempInt = Int(temp) ,
-                tempInt > 0 {
-                self.temperatureLabel.textColor = UIColor.red
-            }
-            else{
-                self.temperatureLabel.textColor = UIColor.blue
-            }
+            self.temperatureLabel.text = (self.weatherCurrent?.temperature)!
         })
+        //未来三天
+        WeatherNetUtil.getDailyWeather(location: location, completionHandler: {
+            result in
+            
+            self.weatherDaily = result.weatherDaily
+            self.tableview.reloadData()
+            
+        })
+        
+        //生活指数
+        WeatherNetUtil.getLifeWeather(location: location, completionHandler: {
+            result in
+            
+            self.weatherLife = result.weatherLife
+            self.tableview.reloadData()
+        })
+        
     }
     
     //MARK:- 选择城市
@@ -141,10 +244,15 @@ class HomeViewController: UIViewController ,RegionViewControllerDelegate {
     //MARK:- 选择城市回调
     func regionViewController(didSearch region: Region) {
         
-        self.weatherWithLocation(location: region.regionId ?? "")
+        self.weatherWithLocation(location: region.name ?? "")
         
     }
     
+    //MARK:- 刷新
+    
+    func refresh() {
+        self.weatherWithLocation(location: "ip")
+    }
     
     //MARK:- 自己写的json字符串转对象
     

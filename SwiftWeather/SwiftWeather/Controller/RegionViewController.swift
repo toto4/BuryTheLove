@@ -12,7 +12,7 @@ import UIKit
     @objc optional func regionViewController(didSearch region: Region)
 }
 
-class RegionViewController: UIViewController ,UITableViewDataSource ,UITableViewDelegate ,UISearchBarDelegate {
+class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableViewDelegate ,UISearchBarDelegate {
 
     weak public var delegate: RegionViewControllerDelegate?
     
@@ -25,6 +25,7 @@ class RegionViewController: UIViewController ,UITableViewDataSource ,UITableView
         self.title = "选择区域"
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         self.setupComponent()
+        self.setupSearchHistory()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -59,6 +60,13 @@ class RegionViewController: UIViewController ,UITableViewDataSource ,UITableView
         
     }
     
+    //MARK: - 加载搜索历史
+    func setupSearchHistory() {
+        self.regionDataArr = DBUtil.default.regionSearchLogs()
+        self.tableView.reloadData()
+    }
+    
+    //MARK: - 搜索
     func searchRegion(keyWord:String) {
         WeatherNetUtil.searchRegion(keyWord: keyWord, completionHandler: {
             res in
@@ -97,6 +105,8 @@ class RegionViewController: UIViewController ,UITableViewDataSource ,UITableView
         let region = self.regionDataArr[indexPath.row]
         
         self.delegate?.regionViewController?(didSearch: region)
+        
+        DBUtil.default.save(regionSearchLog: region)
         
         _ = self.navigationController?.popViewController(animated: true)
         

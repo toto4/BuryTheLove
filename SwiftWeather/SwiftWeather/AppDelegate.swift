@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window?.makeKeyAndVisible()
         
+        //数据库操作
+        _ = DBUtil.default
+        
         return true
     }
 
