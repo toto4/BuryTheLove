@@ -40,7 +40,7 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
         self.hideNavigationBar = true
         
         self.setupComponent()
-        self.localWeatherData()
+        self.refresh()
         
     }
     
@@ -186,19 +186,16 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
         return tempFooter
     }
     
-    //MARK:- 本地天气
-    
-    func localWeatherData() {
-        self.weatherWithLocation(location: "ip")
-    }
-    
     //MARK:- 选择位置天气
     func weatherWithLocation(location: String) {
         //当前天气
         WeatherNetUtil.getCurrentWeather(location: location, completionHandler: {
             result in
-            
+            //结束刷新
             self.refreshControl.endRefreshing()
+            
+            //保存城市ID
+            LocalConfigUtil.save(currentRegionId: result.weatherCurrent?.regoin?.regionId ?? "上海")
             
             self.weatherCurrent = result.weatherCurrent
             
@@ -251,7 +248,7 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
     //MARK:- 刷新
     
     func refresh() {
-        self.weatherWithLocation(location: "ip")
+        self.weatherWithLocation(location: LocalConfigUtil.currentRegionId() ?? "ip")
     }
     
     //MARK:- 自己写的json字符串转对象

@@ -31,6 +31,8 @@
 		5874EC8A1E2DC6A5009F1C99 /* HomeLifeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5874EC891E2DC6A5009F1C99 /* HomeLifeCell.swift */; };
 		5874EC8C1E2E03BD009F1C99 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5874EC8B1E2E03BD009F1C99 /* DateUtil.swift */; };
 		5874EC8E1E2F2AC0009F1C99 /* DBUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5874EC8D1E2F2AC0009F1C99 /* DBUtil.swift */; };
+		58EBDF131E53FDF6004FDAF1 /* LocalConfigUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EBDF121E53FDF6004FDAF1 /* LocalConfigUtil.swift */; };
+		58EBDF151E54518F004FDAF1 /* RegionSearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EBDF141E54518F004FDAF1 /* RegionSearchResultController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +62,8 @@
 		5874EC891E2DC6A5009F1C99 /* HomeLifeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeLifeCell.swift; sourceTree = "<group>"; };
 		5874EC8B1E2E03BD009F1C99 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 		5874EC8D1E2F2AC0009F1C99 /* DBUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBUtil.swift; sourceTree = "<group>"; };
+		58EBDF121E53FDF6004FDAF1 /* LocalConfigUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalConfigUtil.swift; sourceTree = "<group>"; };
+		58EBDF141E54518F004FDAF1 /* RegionSearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionSearchResultController.swift; sourceTree = "<group>"; };
 		724FEA8DC6733F6D1B720B46 /* Pods_SwiftWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E34930DA85D1304A8F0BCF21 /* Pods-SwiftWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftWeather.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftWeather/Pods-SwiftWeather.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,6 +155,7 @@
 				5874EC851E263090009F1C99 /* BaseViewController.swift */,
 				5874EC5A1E1E38CC009F1C99 /* HomeViewController.swift */,
 				5874EC731E238FFE009F1C99 /* RegionViewController.swift */,
+				58EBDF141E54518F004FDAF1 /* RegionSearchResultController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -194,6 +199,7 @@
 				5874EC6F1E236410009F1C99 /* WeatherNetUtil.swift */,
 				5874EC8B1E2E03BD009F1C99 /* DateUtil.swift */,
 				5874EC8D1E2F2AC0009F1C99 /* DBUtil.swift */,
+				58EBDF121E53FDF6004FDAF1 /* LocalConfigUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -236,7 +242,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = ziooooo;
 				TargetAttributes = {
 					584D317E1E1BA1AC00108A83 = {
@@ -342,9 +348,11 @@
 				5874EC7E1E25DC94009F1C99 /* WeatherDaily.swift in Sources */,
 				5874EC881E28657D009F1C99 /* HomeWeatherCell.swift in Sources */,
 				5874EC631E1F41FD009F1C99 /* CCNetTool.swift in Sources */,
+				58EBDF131E53FDF6004FDAF1 /* LocalConfigUtil.swift in Sources */,
 				5874EC5B1E1E38CC009F1C99 /* HomeViewController.swift in Sources */,
 				5874EC7A1E25D806009F1C99 /* WeatherCurrent.swift in Sources */,
 				5874EC701E236410009F1C99 /* WeatherNetUtil.swift in Sources */,
+				58EBDF151E54518F004FDAF1 /* RegionSearchResultController.swift in Sources */,
 				5874EC8E1E2F2AC0009F1C99 /* DBUtil.swift in Sources */,
 				5874EC801E261634009F1C99 /* WeatherDailyResult.swift in Sources */,
 				5874EC5F1E1E3A38009F1C99 /* Weather.swift in Sources */,

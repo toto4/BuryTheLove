@@ -20,30 +20,31 @@ class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableVi
     var searchBar: UISearchBar!
     var regionDataArr: [Region] = []
     
+    var searchController: UISearchController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "选择区域"
-        self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         self.setupComponent()
         self.setupSearchHistory()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.searchBar.becomeFirstResponder()
-    }
-    
     func setupComponent() {
+        self.definesPresentationContext = true
+        
+        let resultVc = RegionSearchResultController()
+        resultVc.parentController = self
+        
+        self.searchController = UISearchController.init(searchResultsController: resultVc)
+        
         
         //SearchBar
-        self.searchBar = UISearchBar()
+        self.searchBar = self.searchController.searchBar
+        self.searchBar.frame = CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 44)
         self.searchBar.barTintColor = UIColor.groupTableViewBackground
         self.searchBar.delegate = self
         self.searchBar.placeholder = "例:北京,beijing,bj"
-        self.view.addSubview(self.searchBar)
-        self.searchBar.snp.makeConstraints { (make) in
-            make.top.left.right.equalTo(self.view)
-        }
+        
         
         //TableView
         self.tableView = UITableView()
@@ -53,9 +54,10 @@ class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableVi
         self.view.addSubview(self.tableView)
         self.tableView.snp.makeConstraints { (make) in
             make.bottom.left.right.equalTo(self.view)
-            make.top.equalTo(self.searchBar.snp.bottom)
+            make.top.equalTo(self.view);
         }
         
+        self.tableView.tableHeaderView = self.searchBar
         
         
     }
@@ -70,8 +72,10 @@ class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableVi
     func searchRegion(keyWord:String) {
         WeatherNetUtil.searchRegion(keyWord: keyWord, completionHandler: {
             res in
-            self.regionDataArr = res.regions
-            self.tableView.reloadData()
+            let resVc = self.searchController.searchResultsController as! RegionSearchResultController
+            
+            resVc.regionDataArr = res.regions
+            resVc.tableView.reloadData()
         })
     }
     
@@ -112,9 +116,6 @@ class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableVi
         
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.searchBar.resignFirstResponder()
-    }
     
     //MARK: - SearchBar Delegate
     
@@ -122,10 +123,6 @@ class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableVi
         if !searchText.isEmpty {
             self.searchRegion(keyWord: searchText)
         }
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.searchBar.resignFirstResponder()
     }
     
 

@@ -98,6 +98,13 @@ final class DBUtil: NSObject {
         return regions
     }
     
+    func deleteRegion(regionId: String) {
+        
+        let table = Table(TABLE_REGION_SEARCH_LOG)
+        
+        try! self.db?.run(table.filter(Expression<String>("region_id") == regionId).delete())
+    }
+    
     
     
     
