@@ -116,6 +116,30 @@ class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableVi
         
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let action = UITableViewRowAction.init(style: .default, title: "删除") { (action, index) in
+            //删除数据
+            let region = self.regionDataArr[index.row]
+            
+            DBUtil.default.deleteRegion(regionId: region.regionId!)
+            
+            self.regionDataArr = DBUtil.default.regionSearchLogs()
+            
+            tableView.deleteRows(at: [index], with: .left)
+        }
+        return [action]
+    }
+//    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+//        return .delete
+//    }
+//    
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        
+//    }
     
     //MARK: - SearchBar Delegate
     

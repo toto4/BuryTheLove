@@ -41,6 +41,7 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
         
         self.setupComponent()
         self.refresh()
+        self.refreshControl.beginRefreshing()
         
     }
     
@@ -123,14 +124,13 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
         //选择地区按钮
         self.regionButton = UIButton()
         self.regionButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        self.regionButton.setTitle("选择地区", for: .normal)
-        self.regionButton.setTitleColor(UIColor.white, for: .normal)
-        self.regionButton.backgroundColor = UIColor.blue
+        self.regionButton.setImage(UIImage.init(named: "region_icon"), for: .normal)
         self.regionButton.addTarget(self, action: #selector(chooseRegion), for: .touchUpInside)
         self.view.addSubview(self.regionButton)
         self.regionButton.snp.makeConstraints { (make) in
-            make.size.equalTo(CGSize(width: 70, height: 30))
-            make.top.left.equalTo(20)
+            make.size.equalTo(CGSize(width: 40, height: 40))
+            make.top.equalTo(20)
+            make.left.equalTo(10)
         }
         
     }
@@ -242,6 +242,7 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
     func regionViewController(didSearch region: Region) {
         
         self.weatherWithLocation(location: region.name ?? "")
+        self.refreshControl.beginRefreshing()
         
     }
     
