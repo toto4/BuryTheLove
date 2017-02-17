@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow.init(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor.white
-        UINavigationBar.appearance().tintColor = UIColor.lightGray
+        UINavigationBar.appearance().tintColor = ColorMain
         
         self.window?.rootViewController = UINavigationController(rootViewController: HomeViewController())
         

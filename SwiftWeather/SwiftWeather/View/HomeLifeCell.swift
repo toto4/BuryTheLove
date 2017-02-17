@@ -36,7 +36,7 @@ class HomeLifeCell: UITableViewCell {
             make.edges.equalTo(self.contentView)
         }
         
-        let textColor = RGBA(r: 80, g: 80, b: 253, a: 1)
+        let textColor = ColorMain
         
         self.lifeNameLabel = UILabel()
         self.lifeNameLabel.textColor = textColor

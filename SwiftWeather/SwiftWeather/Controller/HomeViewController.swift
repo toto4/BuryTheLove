@@ -12,6 +12,10 @@ import SwiftyJSON
 
 class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITableViewDataSource ,UITableViewDelegate {
     
+    var containView: UIView!
+    
+    var coverView: CoverView!
+    
     var tableview: UITableView!
     
     var cityNameLabel: UILabel!
@@ -22,7 +26,7 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
     
     var temperatureLabel: UILabel!
     
-    var regionButton: UIButton!
+    var windLabel: UILabel!
     
     let refreshControl = UIRefreshControl()
     
@@ -46,6 +50,13 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
     }
     
     func setupComponent() {
+        
+        let containView = UIView()
+        self.containView = containView
+        self.view.addSubview(containView)
+        containView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
 
         self.tableview = UITableView(frame: CGRect.zero, style: .grouped)
         self.tableview.backgroundColor = UIColor.white
@@ -55,16 +66,14 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
         self.tableview.delegate = self
         self.tableview.showsVerticalScrollIndicator = false
         self.tableview.separatorStyle = .none
-        self.view.addSubview(self.tableview)
+        containView.addSubview(self.tableview)
         self.tableview.snp.makeConstraints { (make) in
-            make.edges.equalTo(self.view)
+            make.edges.equalToSuperview()
         }
         
         let headerView = UIView()
         headerView.frame = CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 320)
         self.tableview.tableHeaderView = headerView
-        
-        self.tableview.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: EDGE_TEXT))
         
         self.refreshControl.tintColor = UIColor.black
         self.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
@@ -76,7 +85,7 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
         self.cityNameLabel.font = UIFont.systemFont(ofSize: 32, weight: UIFontWeightThin)
         headerView.addSubview(self.cityNameLabel)
         self.cityNameLabel.snp.makeConstraints { (make) in
-            make.centerX.equalTo(self.view)
+            make.centerX.equalTo(containView)
             make.top.equalTo(headerView).offset(60)
         }
         
@@ -120,18 +129,71 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
             make.left.equalTo(self.temperatureLabel.snp.right)
         }
         
+        //风速风向
+        let footerView = UIView()
+        footerView.frame = CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: EDGE_BASE * 2 + 30)
+        
+        self.tableview.tableFooterView = footerView
+        
+        let windLabel = UILabel()
+        self.windLabel = windLabel
+        windLabel.textColor = UIColor.darkGray
+        windLabel.font = UIFont.systemFont(ofSize: 13, weight: UIFontWeightThin)
+        windLabel.textAlignment = .center
+        footerView.addSubview(windLabel)
+        windLabel.snp.makeConstraints { (make) in
+            make.width.equalTo(SCREEN_WIDTH)
+            make.top.equalTo(footerView).offset(EDGE_BASE)
+            make.left.equalTo(footerView)
+        }
         
         //选择地区按钮
-        self.regionButton = UIButton()
-        self.regionButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        self.regionButton.setImage(UIImage.init(named: "region_icon"), for: .normal)
-        self.regionButton.addTarget(self, action: #selector(chooseRegion), for: .touchUpInside)
-        self.view.addSubview(self.regionButton)
-        self.regionButton.snp.makeConstraints { (make) in
+        let regionButton = UIButton()
+        regionButton.imageView?.tintColor = ColorMain
+        regionButton.setImage(UIImage.init(named: "region_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        regionButton.addTarget(self, action: #selector(chooseRegion), for: .touchUpInside)
+        containView.addSubview(regionButton)
+        regionButton.snp.makeConstraints { (make) in
             make.size.equalTo(CGSize(width: 40, height: 40))
             make.top.equalTo(20)
             make.left.equalTo(10)
         }
+        
+        //目录按钮
+        let menuButton = UIButton()
+        menuButton.imageView?.tintColor = ColorMain
+        menuButton.setImage(UIImage.init(named: "menu_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        menuButton.addTarget(self, action: #selector(openMenu), for: .touchUpInside)
+        containView.addSubview(menuButton)
+        menuButton.snp.makeConstraints { (make) in
+            make.centerY.size.equalTo(regionButton)
+            make.right.equalTo(-10)
+        }
+        
+        
+        //coverView
+        let coverView = CoverView()
+        self.coverView = coverView
+        containView.addSubview(coverView)
+        coverView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(closeMenu))
+        coverView.addGestureRecognizer(tap)
+        
+        //设置菜单view
+        let menuVc = MenuViewController()
+        self.addChildViewController(menuVc)
+        menuVc.view.frame = self.view.bounds
+        self.view.insertSubview(menuVc.view, belowSubview: containView)
+        
+        //设置lodingView
+        let loadingVc = LoadingViewController()
+        self.addChildViewController(loadingVc)
+        loadingVc.view.frame = self.view.bounds
+        self.view.addSubview(loadingVc.view)
+        
         
     }
     
@@ -177,7 +239,7 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return EDGE_TEXT
+        return EDGE_BASE
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -213,6 +275,14 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
             
             self.weatherDaily = result.weatherDaily
             self.tableview.reloadData()
+            //设置风向
+            let daily = self.weatherDaily?.dailys.first
+            
+            let direction = "今天 风向:\(daily?.windDirection ?? "未知")，"
+            let scale = "等级:\(daily?.windScale ?? "未知")，"
+            let speed = "\(daily?.windSpeed ?? "未知")km/h"
+            
+            self.windLabel.text = direction + scale + speed
             
         })
         
@@ -226,7 +296,7 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
         
     }
     
-    //MARK:- 选择城市
+    //MARK:- 选择地区 跳转
     
     func chooseRegion() {
         
@@ -244,6 +314,24 @@ class HomeViewController: BaseViewController ,RegionViewControllerDelegate ,UITa
         self.weatherWithLocation(location: region.name ?? "")
         self.refreshControl.beginRefreshing()
         
+    }
+    
+    //MARK:- 打开目录
+    func openMenu() {
+        
+        self.coverView.show()
+        UIView.animate(withDuration: 0.3) { 
+            self.containView.transform = CGAffineTransform.init(translationX: -MENU_WIDTH, y: 0)
+            
+        }
+    }
+    
+    //MARK:- 关闭目录
+    func closeMenu() {
+        self.coverView.hide()
+        UIView.animate(withDuration: 0.3) {
+            self.containView.transform = CGAffineTransform.identity
+        }
     }
     
     //MARK:- 刷新

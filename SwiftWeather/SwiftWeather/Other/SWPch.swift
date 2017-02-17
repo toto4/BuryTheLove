@@ -13,6 +13,8 @@ func RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor { return UICol
 
 let ColorBorder = RGBA(r:220,g: 220,b: 220,a: 1)
 
+let ColorMain = RGBA(r: 0, g: 148, b: 222, a: 1)
+
 let API_HOST = "https://api.thinkpage.cn/v3"
 
 let SCREEN_WIDTH = UIScreen.main.bounds.size.width

@@ -32,14 +32,19 @@ class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableVi
     func setupComponent() {
         self.definesPresentationContext = true
         
+        //清空item
+        let cleanItem = UIBarButtonItem(image: UIImage(named:"clean_icon"), style: .plain, target: self, action: #selector(cleanRegion))
+        self.navigationItem.rightBarButtonItem = cleanItem
+        
+        //搜索结果显示控制器
         let resultVc = RegionSearchResultController()
         resultVc.parentController = self
-        
         self.searchController = UISearchController.init(searchResultsController: resultVc)
         
         
         //SearchBar
         self.searchBar = self.searchController.searchBar
+        self.searchBar.tintColor = ColorMain
         self.searchBar.frame = CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 44)
         self.searchBar.barTintColor = UIColor.groupTableViewBackground
         self.searchBar.delegate = self
@@ -133,13 +138,13 @@ class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableVi
         }
         return [action]
     }
-//    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-//        return .delete
-//    }
-//    
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        
-//    }
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+    }
     
     //MARK: - SearchBar Delegate
     
@@ -147,6 +152,25 @@ class RegionViewController: BaseViewController ,UITableViewDataSource ,UITableVi
         if !searchText.isEmpty {
             self.searchRegion(keyWord: searchText)
         }
+    }
+    
+    //MARK: - 清空地区信息
+    func cleanRegion() {
+        let alert = UIAlertController(title: "提示", message: "确定清空吗?", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "再想想", style: .cancel, handler: nil)
+        
+        let doneAction = UIAlertAction(title: "确定", style: .default) { (action) in
+            //清空数据
+            DBUtil.default.cleanRegion()
+            self.regionDataArr = DBUtil.default.regionSearchLogs()
+            self.tableView.reloadData()
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(doneAction)
+        
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
 

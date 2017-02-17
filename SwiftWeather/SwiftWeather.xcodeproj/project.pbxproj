@@ -33,10 +33,14 @@
 		5874EC8E1E2F2AC0009F1C99 /* DBUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5874EC8D1E2F2AC0009F1C99 /* DBUtil.swift */; };
 		58EBDF131E53FDF6004FDAF1 /* LocalConfigUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EBDF121E53FDF6004FDAF1 /* LocalConfigUtil.swift */; };
 		58EBDF151E54518F004FDAF1 /* RegionSearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EBDF141E54518F004FDAF1 /* RegionSearchResultController.swift */; };
+		58EBDF3D1E55A7A7004FDAF1 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EBDF3C1E55A7A6004FDAF1 /* MenuViewController.swift */; };
+		58FBFFB81E56922E00023C76 /* CoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FBFFB71E56922E00023C76 /* CoverView.swift */; };
+		58FBFFBA1E56ADA100023C76 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FBFFB91E56ADA100023C76 /* LoadingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3796A8329FD97EA7A7FF3C5E /* Pods-SwiftWeather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftWeather.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftWeather/Pods-SwiftWeather.release.xcconfig"; sourceTree = "<group>"; };
+		581D953B1E56E63C005BA932 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		584D317F1E1BA1AC00108A83 /* SwiftWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		584D31821E1BA1AC00108A83 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		584D31891E1BA1AC00108A83 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -64,6 +68,9 @@
 		5874EC8D1E2F2AC0009F1C99 /* DBUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBUtil.swift; sourceTree = "<group>"; };
 		58EBDF121E53FDF6004FDAF1 /* LocalConfigUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalConfigUtil.swift; sourceTree = "<group>"; };
 		58EBDF141E54518F004FDAF1 /* RegionSearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionSearchResultController.swift; sourceTree = "<group>"; };
+		58EBDF3C1E55A7A6004FDAF1 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		58FBFFB71E56922E00023C76 /* CoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverView.swift; sourceTree = "<group>"; };
+		58FBFFB91E56ADA100023C76 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		724FEA8DC6733F6D1B720B46 /* Pods_SwiftWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E34930DA85D1304A8F0BCF21 /* Pods-SwiftWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftWeather.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftWeather/Pods-SwiftWeather.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -156,6 +163,8 @@
 				5874EC5A1E1E38CC009F1C99 /* HomeViewController.swift */,
 				5874EC731E238FFE009F1C99 /* RegionViewController.swift */,
 				58EBDF141E54518F004FDAF1 /* RegionSearchResultController.swift */,
+				58EBDF3C1E55A7A6004FDAF1 /* MenuViewController.swift */,
+				58FBFFB91E56ADA100023C76 /* LoadingViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -178,6 +187,7 @@
 			children = (
 				5874EC871E28657D009F1C99 /* HomeWeatherCell.swift */,
 				5874EC891E2DC6A5009F1C99 /* HomeLifeCell.swift */,
+				58FBFFB71E56922E00023C76 /* CoverView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -336,14 +346,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				5874EC671E1F8B43009F1C99 /* CCResult.swift in Sources */,
+				58FBFFB81E56922E00023C76 /* CoverView.swift in Sources */,
 				5874EC8C1E2E03BD009F1C99 /* DateUtil.swift in Sources */,
 				5874EC841E262E47009F1C99 /* WeatherLifeResult.swift in Sources */,
 				584D31831E1BA1AC00108A83 /* AppDelegate.swift in Sources */,
 				584D31981E1BA2F100108A83 /* SWPch.swift in Sources */,
 				5874EC721E238156009F1C99 /* RegionResult.swift in Sources */,
 				5874EC7C1E25DB9A009F1C99 /* WeatherCurrentResult.swift in Sources */,
+				58EBDF3D1E55A7A7004FDAF1 /* MenuViewController.swift in Sources */,
 				5874EC8A1E2DC6A5009F1C99 /* HomeLifeCell.swift in Sources */,
 				5874EC611E1E4C2F009F1C99 /* Region.swift in Sources */,
+				58FBFFBA1E56ADA100023C76 /* LoadingViewController.swift in Sources */,
 				5874EC861E263090009F1C99 /* BaseViewController.swift in Sources */,
 				5874EC7E1E25DC94009F1C99 /* WeatherDaily.swift in Sources */,
 				5874EC881E28657D009F1C99 /* HomeWeatherCell.swift in Sources */,
@@ -368,6 +381,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				584D318C1E1BA1AC00108A83 /* Base */,
+				581D953B1E56E63C005BA932 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -379,6 +393,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -429,6 +444,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -475,6 +491,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 78PX8BWP78;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SwiftWeather/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -493,6 +510,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 78PX8BWP78;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SwiftWeather/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
