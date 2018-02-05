@@ -151,7 +151,6 @@ class HomeWeatherCell: UITableViewCell {
             make.left.equalToSuperview().offset(EDGE_TEXT)
             make.right.equalToSuperview().offset(-EDGE_TEXT)
         }
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
